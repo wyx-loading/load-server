@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package com.loading.server_rrimpl.common;
+option java_outer_classname = "ResponseProtocol";
+
+message Response {
+	int32 cmd = 1;
+	int32 tag = 2;
+	string param = 3;
+}
