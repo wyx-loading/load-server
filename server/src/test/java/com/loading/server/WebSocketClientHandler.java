@@ -7,6 +7,7 @@ import io.netty.channel.ChannelPromise;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.util.CharsetUtil;
 
 public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
@@ -62,7 +63,7 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 					", content=" + response.content().toString(CharsetUtil.UTF_8));
 		}
 		
-		
+		WebSocketFrame
 	}
 
 }
