@@ -7,11 +7,26 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 public class RequestHandler extends SimpleChannelInboundHandler<RequestProtocol.Request> {
+	
+	@Override
+	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		System.out.println("new channel " + ctx.channel().id() + " connected");
+	}
+
+	@Override
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+		System.out.println("new channel " + ctx.channel().id() + " disconnected");
+	}
+
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+		cause.printStackTrace();
+		ctx.close();
+	}
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Request msg) throws Exception {
-		// TODO Auto-generated method stub
-		
+		System.out.println("received [" + ctx.channel().id() + "]\t" + msg.getValue());
 	}
 
 }

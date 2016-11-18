@@ -19,6 +19,8 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 public class SocketStarter {
 	
@@ -32,6 +34,8 @@ public class SocketStarter {
 				.childHandler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel ch) throws Exception {
+						ch.pipeline().addLast("logging", new LoggingHandler(LogLevel.WARN));
+						
 						// IpFloodCheck
 						ch.pipeline().addLast("ipFloodChecker", new IpFloodHandler());
 						
@@ -58,8 +62,8 @@ public class SocketStarter {
 			
 			// Bind and start to accept incoming connections.
 			ChannelFuture f = b.bind(
-					Configs.instance().serverConfig().getSocketHost(), 
-					Configs.instance().serverConfig().getSockPort()).sync();
+//					Configs.instance().serverConfig().getSocketHost(), 
+					Configs.instance().serverConfig().getSocketPort()).sync();
 			
 			// Wait until the server socket is closed.
 			// In this example, this does not happen, but you can do that to gracefully
@@ -69,10 +73,6 @@ public class SocketStarter {
 			workerGroup.shutdownGracefully();
 			bossGroup.shutdownGracefully();
 		}
-	}
-	
-	public static void main(String[] args) throws Exception {
-		new SocketStarter().run();
 	}
 
 }

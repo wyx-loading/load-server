@@ -11,7 +11,7 @@ public class ServerConfig {
 	/** Socket 绑定地址 */
 	private String socketHost;
 	/** Socket 绑定端口 */
-	private int sockPort;
+	private int socketPort;
 	
 	/** 同一个ip上允许登录的用户数目 */
 	private int maxUserPerIp;
@@ -36,7 +36,7 @@ public class ServerConfig {
 	
 	
 	public String getSocketHost() { return socketHost; }
-	public int getSockPort() { return sockPort; }
+	public int getSocketPort() { return socketPort; }
 
 	public int getMaxUserPerIp() { return maxUserPerIp; }
 	public Set<String> getInvalidIps() { return invalidIps; }

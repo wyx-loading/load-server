@@ -6,4 +6,5 @@ option java_outer_classname = "RequestProtocol";
 message Request {
 	int32 cmd = 1;
 	int32 tag = 2;
+	string value = 3;
 }

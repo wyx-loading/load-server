@@ -15,7 +15,8 @@ public class Configs {
 	private final ConfigWrapper<ServerConfig> serverConfig = new ConfigWrapper<>(ServerConfig.class);
 	
 	public void load() {
-		serverConfig.load("serverConfig.xml");
+		String path = FixConfig.CONFIG_PATH + "serverConfig.xml";
+		serverConfig.load(path);
 	}
 
 	public void reload(String... args) {

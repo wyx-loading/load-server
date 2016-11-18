@@ -1,0 +1,8 @@
+<ServerConfig>
+	<socketHost>127.0.0.1</socketHost>
+	<socketPort>8080</socketPort>
+
+	<maxUserPerIp>100</maxUserPerIp>
+	<invalidIps></invalidIps>
+	<noLimitIps>127.0.0</noLimitIps>
+</ServerConfig>
