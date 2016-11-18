@@ -10,6 +10,7 @@ import com.loading.server_rrimpl.common.ResponseProtocol;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
@@ -58,7 +59,9 @@ public class WebsocketClient {
 								handshakeHandler, 
 //								new ProtobufDecoder(ResponseProtocol.Response.getDefaultInstance()), 
 //								new ProtobufEncoder(),
-								new ResponseHandler());
+								new StringResponseHandler()
+//								new ResponseHandler()
+								);
 					}
 				});
 			
@@ -78,11 +81,12 @@ public class WebsocketClient {
 					WebSocketFrame frame = new PingWebSocketFrame(Unpooled.wrappedBuffer(new byte[] { 8, 1, 8, 1 }));
 					ch.writeAndFlush(frame);
 				} else {
-					ch.writeAndFlush(RequestProtocol.Request.newBuilder()
-						.setCmd(1)
-						.setTag(1)
-						.setValue(msg)
-						.build());
+//					ch.writeAndFlush(RequestProtocol.Request.newBuilder()
+//						.setCmd(1)
+//						.setTag(1)
+//						.setValue(msg)
+//						.build());
+					ch.writeAndFlush(msg);
 				}
 			}
 		} finally {

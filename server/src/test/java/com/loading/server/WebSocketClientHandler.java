@@ -1,27 +1,20 @@
 package com.loading.server;
 
-import java.util.List;
-
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
-import io.netty.handler.codec.MessageToMessageDecoder;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
-import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.util.CharsetUtil;
 
-public class WebSocketHandshakeHandler extends MessageToMessageDecoder<Object> {
+public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 	
 	private final WebSocketClientHandshaker handshaker;
 	private ChannelPromise handshakeFuture;
 	
-	public WebSocketHandshakeHandler(WebSocketClientHandshaker handshaker) {
+	public WebSocketClientHandler(WebSocketClientHandshaker handshaker) {
 		this.handshaker = handshaker;
 	}
 	
@@ -54,7 +47,7 @@ public class WebSocketHandshakeHandler extends MessageToMessageDecoder<Object> {
 	}
 
 	@Override
-	protected void decode(ChannelHandlerContext ctx, Object msg, List<Object> out) throws Exception {
+	protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
 		Channel ch = ctx.channel();
 		if(!handshaker.isHandshakeComplete()) {
 			handshaker.finishHandshake(ch, (FullHttpResponse) msg);
@@ -65,23 +58,11 @@ public class WebSocketHandshakeHandler extends MessageToMessageDecoder<Object> {
 		
 		if(msg instanceof FullHttpResponse) {
 			FullHttpResponse response = (FullHttpResponse) msg;
-			throw new IllegalStateException("Unexpected FullHttpResponse (getStatus=" + response.status() + 
+			throw new IllegalStateException("Unexpected FullHttpResponse (getStatus=" + response.getStatus() + 
 					", content=" + response.content().toString(CharsetUtil.UTF_8));
 		}
 		
-		WebSocketFrame frame = (WebSocketFrame) msg;
-		if(frame instanceof PongWebSocketFrame) {
-			System.out.println("WebSocket Client received pong");
-		} else if(frame instanceof CloseWebSocketFrame) {
-			System.out.println("WebSocket Client received closing");
-			ch.close();
-		} else if(frame instanceof BinaryWebSocketFrame) {
-			BinaryWebSocketFrame binaryFrame = (BinaryWebSocketFrame) frame;
-			out.add(binaryFrame.content());
-		} else if(frame instanceof TextWebSocketFrame) {
-			TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-			out.add(textFrame.content());
-		}
+		
 	}
 
 }

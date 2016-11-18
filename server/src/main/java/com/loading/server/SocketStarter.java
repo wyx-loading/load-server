@@ -2,8 +2,6 @@ package com.loading.server;
 
 import com.loading.server.config.Configs;
 import com.loading.server_rrimpl.EventExecutorGroupImpl;
-import com.loading.server_rrimpl.RequestHandler;
-import com.loading.server_rrimpl.common.RequestProtocol;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -17,8 +15,6 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
-import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -43,10 +39,10 @@ public class SocketStarter {
 						ch.pipeline().addLast("codec", new HttpServerCodec());
 						ch.pipeline().addLast("aggregator", new HttpObjectAggregator(64 * 1024));
 						ch.pipeline().addLast("wsCompression", new WebSocketServerCompressionHandler());
-						ch.pipeline().addLast("wsProtocol", new WebSocketServerProtocolHandler("/"));
-						ch.pipeline().addLast("wsBinFrame", new BinaryWebsockFrameToByteBufDecoder());
-						ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(RequestProtocol.Request.getDefaultInstance()));
-						ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
+						ch.pipeline().addLast("wsProtocol", new WebSocketServerProtocolHandler("/", null, true));
+//						ch.pipeline().addLast("wsBinFrame", new BinaryWebsockFrameToByteBufDecoder());
+//						ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(RequestProtocol.Request.getDefaultInstance()));
+//						ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
 						
 						// Socket Pipeline
 //						ch.pipeline().addLast("frameDecoder", new ProtobufVarint32FrameDecoder());

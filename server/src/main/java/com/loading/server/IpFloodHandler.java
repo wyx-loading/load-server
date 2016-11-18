@@ -13,6 +13,8 @@ public class IpFloodHandler extends ChannelInboundHandlerAdapter {
 		String ip = socketAddress.getAddress().getHostAddress();
 		if(!IpFloodChecker.getInstance().addIp(ip)) {
 			ctx.close();
+		} else {
+			super.channelActive(ctx);
 		}
 	}
 
@@ -21,6 +23,7 @@ public class IpFloodHandler extends ChannelInboundHandlerAdapter {
 		InetSocketAddress inAddress = (InetSocketAddress) ctx.channel().remoteAddress();
 		String ip = inAddress.getAddress().getHostAddress();
 		IpFloodChecker.getInstance().decreaseIpCount(ip);
+		super.channelInactive(ctx);
 	}
 
 }
