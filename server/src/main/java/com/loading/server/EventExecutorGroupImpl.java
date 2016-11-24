@@ -1,4 +1,4 @@
-package com.loading.server_rrimpl;
+package com.loading.server;
 
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;

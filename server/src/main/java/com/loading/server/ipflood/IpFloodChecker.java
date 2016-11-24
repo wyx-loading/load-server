@@ -1,4 +1,4 @@
-package com.loading.server;
+package com.loading.server.ipflood;
 
 import java.util.concurrent.ConcurrentHashMap;
 

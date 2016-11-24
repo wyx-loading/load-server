@@ -1,8 +1,9 @@
-package com.loading.server.channel;
+package com.loading.server;
 
+import com.loading.server.channel.BinaryFrameConverter;
+import com.loading.server.channel.BinaryFrameWrapper;
 import com.loading.server.config.Configs;
-import com.loading.server_rrimpl.EventExecutorGroupImpl;
-import com.loading.server_rrimpl.RequestHandler;
+import com.loading.server.ipflood.IpFloodHandler;
 import com.loading.server_rrimpl.common.RequestProtocol;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -37,7 +38,7 @@ public class SocketStarter {
 						ch.pipeline().addLast("logging", new LoggingHandler(LogLevel.WARN));
 
 						// IpFloodCheck
-//						ch.pipeline().addLast("ipFloodChecker", new IpFloodHandler());
+						ch.pipeline().addLast("ipFloodChecker", new IpFloodHandler());
 						
 						// Websocket Pipeline
 						ch.pipeline().addLast("codec", new HttpServerCodec());
