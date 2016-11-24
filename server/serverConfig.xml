@@ -1,6 +1,6 @@
 <ServerConfig>
 	<socketHost>127.0.0.1</socketHost>
-	<socketPort>8080</socketPort>
+	<socketPort>9332</socketPort>
 
 	<maxUserPerIp>100</maxUserPerIp>
 	<invalidIps></invalidIps>

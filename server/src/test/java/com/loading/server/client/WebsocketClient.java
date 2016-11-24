@@ -1,16 +1,16 @@
-package com.loading.server;
+package com.loading.server.client;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 
+import com.loading.server.channel.BinaryFrameWrapper;
 import com.loading.server_rrimpl.common.RequestProtocol;
 import com.loading.server_rrimpl.common.ResponseProtocol;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
@@ -33,7 +33,7 @@ import io.netty.handler.logging.LoggingHandler;
 
 public class WebsocketClient {
 	
-	static final String URL = "ws://127.0.0.1:8080/";
+	static final String URL = "ws://127.0.0.1:9332/";
 	
 	public static void main(String[] args) throws Exception {
 		URI uri = new URI(URL);
@@ -57,10 +57,10 @@ public class WebsocketClient {
 								new HttpObjectAggregator(8192), 
 								WebSocketClientCompressionHandler.INSTANCE, 
 								handshakeHandler, 
-//								new ProtobufDecoder(ResponseProtocol.Response.getDefaultInstance()), 
-//								new ProtobufEncoder(),
-								new StringResponseHandler()
-//								new ResponseHandler()
+								new ProtobufDecoder(ResponseProtocol.Response.getDefaultInstance()), 
+								new BinaryFrameWrapper(),
+								new ProtobufEncoder(),
+								new ResponseHandler()
 								);
 					}
 				});
@@ -81,12 +81,7 @@ public class WebsocketClient {
 					WebSocketFrame frame = new PingWebSocketFrame(Unpooled.wrappedBuffer(new byte[] { 8, 1, 8, 1 }));
 					ch.writeAndFlush(frame);
 				} else {
-//					ch.writeAndFlush(RequestProtocol.Request.newBuilder()
-//						.setCmd(1)
-//						.setTag(1)
-//						.setValue(msg)
-//						.build());
-					ch.writeAndFlush(msg);
+					ch.writeAndFlush(RequestProtocol.Request.newBuilder().setCmd(1).setTag(1).setValue(msg).build());
 				}
 			}
 		} finally {

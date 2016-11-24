@@ -1,21 +1,26 @@
-package com.loading.server;
+package com.loading.server.client;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.util.CharsetUtil;
 
-public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
+public class WebSocketHandshakeHandler extends SimpleChannelInboundHandler<Object> {
 	
 	private final WebSocketClientHandshaker handshaker;
 	private ChannelPromise handshakeFuture;
 	
-	public WebSocketClientHandler(WebSocketClientHandshaker handshaker) {
+	public WebSocketHandshakeHandler(WebSocketClientHandshaker handshaker) {
+		super(true);
 		this.handshaker = handshaker;
 	}
 	
@@ -59,11 +64,22 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 		
 		if(msg instanceof FullHttpResponse) {
 			FullHttpResponse response = (FullHttpResponse) msg;
-			throw new IllegalStateException("Unexpected FullHttpResponse (getStatus=" + response.getStatus() + 
-					", content=" + response.content().toString(CharsetUtil.UTF_8));
+			throw new IllegalStateException(
+					"Unexpected FullHttpResponse (getStatus=" + response.status() + 
+					", content=" + response.content().toString(CharsetUtil.UTF_8) + ')');
 		}
 		
-		WebSocketFrame
+		WebSocketFrame frame = (WebSocketFrame) msg;
+		if(frame instanceof BinaryWebSocketFrame) {
+			BinaryWebSocketFrame binFrame = (BinaryWebSocketFrame) frame;
+			ByteBuf content = binFrame.content().retain();
+			ctx.fireChannelRead(content);
+		} else if(frame instanceof PongWebSocketFrame) {
+			System.out.println("WebSocket Client received pong");
+		} else if(frame instanceof CloseWebSocketFrame) {
+			System.out.println("WebSocket Client received closing");
+			ch.close();
+		}
 	}
 
 }

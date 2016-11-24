@@ -1,6 +1,7 @@
 package com.loading.server_rrimpl;
 
 import com.loading.server_rrimpl.common.RequestProtocol;
+import com.loading.server_rrimpl.common.ResponseProtocol;
 import com.loading.server_rrimpl.common.RequestProtocol.Request;
 
 import io.netty.channel.ChannelHandlerContext;
@@ -27,6 +28,8 @@ public class RequestHandler extends SimpleChannelInboundHandler<RequestProtocol.
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Request msg) throws Exception {
 		System.out.println("received [" + ctx.channel().id() + "]\t" + msg.getValue());
+		ctx.channel().writeAndFlush(ResponseProtocol.Response.newBuilder()
+				.setCmd(msg.getCmd()).setTag(msg.getTag()).setParam(msg.getValue().toUpperCase()).build());
 	}
 
 }
