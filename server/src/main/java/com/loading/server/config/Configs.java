@@ -12,11 +12,12 @@ public class Configs {
 		return SingletonHolder.instance;
 	}
 	
-	private final ConfigWrapper<ServerConfig> serverConfig = new ConfigWrapper<>(ServerConfig.class);
-	
+	private ServerConfig serverConfig;
+
 	public void load() {
 		String path = FixConfig.CONFIG_PATH + "serverConfig.xml";
-		serverConfig.load(path);
+		
+		serverConfig = new ConfigWrapper<ServerConfig>(ServerConfig.class).load(path);
 	}
 
 	public void reload(String... args) {
@@ -24,7 +25,7 @@ public class Configs {
 	}
 	
 	public ServerConfig serverConfig() {
-		return serverConfig.get();
+		return serverConfig;
 	}
 
 }

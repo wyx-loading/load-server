@@ -20,6 +20,9 @@ public class ServerConfig {
 	/** 不受限制的ip列表，";"隔开 */
 	private Set<String> noLimitIps;
 	
+	/** 基础读空闲超时秒 */
+	private int commonReadTimeoutSeconds;
+	
 	public void setInvalidIps(String invalidIpsStr) {
 		this.invalidIps = ImmutableSet.<String>builder()
 				.add(invalidIpsStr.split(";"))
@@ -45,5 +48,7 @@ public class ServerConfig {
 	public boolean isNoLimitIp(String ip) {
 		return noLimitIps != null && noLimitIps.contains(ip);
 	}
+	
+	public int getCommonReadTimeoutSeconds() { return commonReadTimeoutSeconds; }
 
 }

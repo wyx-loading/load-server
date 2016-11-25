@@ -2,6 +2,7 @@ package com.loading.server.channel;
 
 import com.loading.server.EventExecutorGroupImpl;
 import com.loading.server.RequestHandler;
+import com.loading.server.config.Configs;
 import com.loading.server.ipflood.IpFloodFilter;
 import com.loading.server_rrimpl.common.RequestProtocol;
 
@@ -16,6 +17,7 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 
 public class ServerChannelInitializer extends ChannelInitializer<Channel> {
 	
@@ -53,6 +55,8 @@ public class ServerChannelInitializer extends ChannelInitializer<Channel> {
 		p.addLast("aggregator", new HttpObjectAggregator(64 * 1024));
 		p.addLast("wsCompression", new WebSocketServerCompressionHandler());
 		p.addLast("wsProtocol", new WebSocketServerProtocolHandler("/", null, true));
+		
+		p.addLast("readTimeout", new ReadTimeoutHandler(Configs.instance().serverConfig().getCommonReadTimeoutSeconds()));
 
 		p.addLast("wsBinFrame", WS_BINFRAME_CONVERTER);
 		p.addLast("binaryWrapper", WS_BINFRAME_WRAPPER);
