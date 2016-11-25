@@ -2,7 +2,7 @@ package com.loading.server.channel;
 
 import com.loading.server.EventExecutorGroupImpl;
 import com.loading.server.RequestHandler;
-import com.loading.server.ipflood.IpFloodHandler;
+import com.loading.server.ipflood.IpFloodFilter;
 import com.loading.server_rrimpl.common.RequestProtocol;
 
 import io.netty.channel.Channel;
@@ -27,8 +27,8 @@ public class ServerChannelInitializer extends ChannelInitializer<Channel> {
 	private static final BinaryFrameWrapper WS_BINFRAME_WRAPPER = 
 			new BinaryFrameWrapper();
 	
-	private static final IpFloodHandler IP_FLOOD_HANDLER = 
-			new IpFloodHandler();
+	private static final IpFloodFilter IP_FLOOD_FILTER = 
+			new IpFloodFilter();
 	
 	private static final ProtobufEncoder PROTOBUF_ENCODER = 
 			new ProtobufEncoder();
@@ -46,7 +46,7 @@ public class ServerChannelInitializer extends ChannelInitializer<Channel> {
 //		p.addLast("logging", LOGGING_HANDLER);
 
 		// IpFloodCheck
-		p.addLast("ipFloodChecker", IP_FLOOD_HANDLER);
+		p.addLast("ipFloodFilter", IP_FLOOD_FILTER);
 		
 		// Websocket Pipeline
 		p.addLast("codec", new HttpServerCodec());

@@ -1,6 +1,7 @@
 package com.loading.server.ipflood;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import com.loading.server.config.Configs;
 
@@ -14,7 +15,7 @@ public class IpFloodChecker {
 		return SingletonHolder.instance;
 	}
 	
-	private ConcurrentHashMap<String, IpCount> ip_count = new ConcurrentHashMap<String, IpCount>();
+	private ConcurrentMap<String, IpCount> ip_count = new ConcurrentHashMap<String, IpCount>();
 
 	// a mutable value，修改时少查一次hash，用AtomInteger也可以。
 	private static class IpCount {
