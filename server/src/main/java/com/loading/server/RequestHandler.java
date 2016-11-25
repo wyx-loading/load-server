@@ -4,9 +4,11 @@ import com.loading.server_rrimpl.common.RequestProtocol;
 import com.loading.server_rrimpl.common.ResponseProtocol;
 import com.loading.server_rrimpl.common.RequestProtocol.Request;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+@ChannelHandler.Sharable
 public class RequestHandler extends SimpleChannelInboundHandler<RequestProtocol.Request> {
 	
 	@Override

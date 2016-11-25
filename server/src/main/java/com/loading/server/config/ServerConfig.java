@@ -21,17 +21,15 @@ public class ServerConfig {
 	private Set<String> noLimitIps;
 	
 	public void setInvalidIps(String invalidIpsStr) {
-		ImmutableSet<String> config = ImmutableSet.<String>builder()
+		this.invalidIps = ImmutableSet.<String>builder()
 				.add(invalidIpsStr.split(";"))
 				.build();
-		this.invalidIps = config;
 	}
 
 	public void setNoLimitIps(String noLimitIpsStr) {
-		ImmutableSet<String> config = ImmutableSet.<String>builder()
+		this.noLimitIps = ImmutableSet.<String>builder()
 				.add(noLimitIpsStr.split(";"))
 				.build();
-		this.noLimitIps = config;
 	}
 	
 	

@@ -28,8 +28,6 @@ import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 
 public class WebsocketClient {
 	
@@ -52,7 +50,7 @@ public class WebsocketClient {
 					protected void initChannel(SocketChannel ch) throws Exception {
 						ChannelPipeline p = ch.pipeline();
 						p.addLast(
-								new LoggingHandler(LogLevel.WARN),
+//								new LoggingHandler(LogLevel.WARN),
 								new HttpClientCodec(), 
 								new HttpObjectAggregator(8192), 
 								WebSocketClientCompressionHandler.INSTANCE, 

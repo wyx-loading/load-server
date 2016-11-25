@@ -2,9 +2,11 @@ package com.loading.server.ipflood;
 
 import java.net.InetSocketAddress;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+@ChannelHandler.Sharable
 public class IpFloodHandler extends ChannelInboundHandlerAdapter {
 	
 	@Override
