@@ -36,6 +36,7 @@ public class RequestHandler extends SimpleChannelInboundHandler<RequestProtocol.
 		System.out.println("received [" + ctx.channel().id() + "]\t" + msg.getValue());
 		ctx.channel().writeAndFlush(ResponseProtocol.Response.newBuilder()
 				.setCmd(msg.getCmd()).setTag(msg.getTag()).setParam(msg.getValue().toUpperCase()).build());
+		Thread.sleep(100000);
 	}
 
 }

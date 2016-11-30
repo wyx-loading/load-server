@@ -5,4 +5,5 @@
 	<maxUserPerIp>100</maxUserPerIp>
 	<invalidIps></invalidIps>
 	<noLimitIps>127.0.0</noLimitIps>
+	<commonReadTimeoutSeconds>300</commonReadTimeoutSeconds>
 </ServerConfig>
